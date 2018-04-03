@@ -19,7 +19,7 @@ import play.api.data.Forms.{boolean, mapping, number, text}
 import play.api.data.validation.Constraints._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{AbstractController, AnyContent, ControllerComponents, Request}
-import service.EmployeeService
+import service.UserService
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.FiniteDuration
@@ -27,7 +27,7 @@ import scala.concurrent.duration.FiniteDuration
 @Singleton
 class LoginController @Inject() (
   silhouette: Silhouette[DefaultEnv],
-  employeeService: EmployeeService,
+  employeeService: UserService,
   credentialsProvider: CredentialsProvider,
   configuration: Configuration,
   clock: Clock,

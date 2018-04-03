@@ -6,7 +6,7 @@ import model.User
 
 import scala.concurrent.Future
 
-trait EmployeeService extends IdentityService[User] {
+trait UserService extends IdentityService[User] {
 
   def retrieve(id: String): Future[Option[User]]
 

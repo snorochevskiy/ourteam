@@ -8,7 +8,7 @@ import model.User
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EmployeeServiceImpl @Inject()(employeeDao: UserDao)(implicit ex: ExecutionContext)extends EmployeeService {
+class UserServiceImpl @Inject()(employeeDao: UserDao)(implicit ex: ExecutionContext)extends UserService {
 
   override def retrieve(id: String): Future[Option[User]] = employeeDao.find(id)
 

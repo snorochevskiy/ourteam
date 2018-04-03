@@ -20,7 +20,7 @@ import dao._
 import net.codingwell.scalaguice.ScalaModule
 import play.api.Configuration
 import play.api.mvc.CookieHeaderEncoding
-import service.{EmployeeService, EmployeeServiceImpl}
+import service.{UserService, UserServiceImpl}
 import net.ceedubs.ficus.Ficus._
 import net.ceedubs.ficus.readers.ArbitraryTypeReader._
 import util.AuthErrorHandler
@@ -34,7 +34,7 @@ class MainModule extends AbstractModule with ScalaModule {
     bind[Silhouette[DefaultEnv]].to[SilhouetteProvider[DefaultEnv]]
 
     bind[UserDao].to[UserDaoImpl]
-    bind[EmployeeService].to[EmployeeServiceImpl]
+    bind[UserService].to[UserServiceImpl]
 
     bind[CompanyDao].to[CompanyDaoImpl]
 
@@ -52,7 +52,7 @@ class MainModule extends AbstractModule with ScalaModule {
 
   @Provides
   def provideEnvironment(
-    employeeService: EmployeeService,
+    employeeService: UserService,
     authenticatorService: AuthenticatorService[CookieAuthenticator],
     eventBus: EventBus): Environment[DefaultEnv] = {
 
