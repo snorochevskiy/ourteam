@@ -1,0 +1,6 @@
+Project is based on play-scala-seed.g8
+(sbt new playframework/play-scala-seed.g8)
+
+Most of solutions are taken from:
+* https://github.com/mohiva/play-silhouette-seed
+* https://github.com/sbrunk/play-silhouette-slick-seed

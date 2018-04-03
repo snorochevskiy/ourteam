@@ -1,0 +1,46 @@
+@import tags._
+@import play.api.data.Form
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+@import play.api.mvc.RequestHeader // implicitly injected to @helper.CSRF.formField
+
+@()(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Login</title>
+
+        @libs()
+
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+
+    </head>
+    <body>
+
+        <div class="container loginForm" >
+            <div class="row justify-content-center">
+                <div class="col-sm-4 my-auto">
+                    <div class="card card-body d-table-cell align-middle">
+                        <form method="POST" action="@controllers.routes.LoginController.submitLogin()">
+                            @helper.CSRF.formField
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Login</label>
+                                <input type="text" class="form-control" name="login"  placeholder="Enter your ID">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Password</label>
+                                <input type="password" class="form-control" name="passwd" placeholder="Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
