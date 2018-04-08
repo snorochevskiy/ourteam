@@ -52,12 +52,12 @@ class MainModule extends AbstractModule with ScalaModule {
 
   @Provides
   def provideEnvironment(
-    employeeService: UserService,
+    userService: UserService,
     authenticatorService: AuthenticatorService[CookieAuthenticator],
     eventBus: EventBus): Environment[DefaultEnv] = {
 
     Environment[DefaultEnv](
-      employeeService,
+      userService,
       authenticatorService,
       Seq(),
       eventBus

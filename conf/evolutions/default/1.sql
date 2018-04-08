@@ -36,11 +36,8 @@ insert into PASSWORD_INFO(HASHER, PASSWORD, SALT, LOGIN_INFO_ID) VALUES
   ('bcrypt-sha256', '$2a$10$qTgtlCiB0/BF1FEx3zFwNOYSjy77wYkX1yqtzoHA9V/VXJOeyJuMq', NULL, 1);
 
 
-create table COMPANY (ID VARCHAR(16) NOT NULL PRIMARY KEY, NAME VARCHAR NOT NULL);
-
 # --- !Downs
 
-drop table COMPANY;
 drop table PASSWORD_INFO;
 drop table USER_LOGIN_INFO;
 drop table LOGIN_INFO;

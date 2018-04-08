@@ -12,6 +12,6 @@ trait UserService extends IdentityService[User] {
 
   def retrieve(loginInfo: LoginInfo): Future[Option[User]]
 
-  def save(employee: User): Future[User]
+  def save(user: User): Future[User]
 
 }

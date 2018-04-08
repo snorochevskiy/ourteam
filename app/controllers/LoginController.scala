@@ -27,7 +27,7 @@ import scala.concurrent.duration.FiniteDuration
 @Singleton
 class LoginController @Inject() (
   silhouette: Silhouette[DefaultEnv],
-  employeeService: UserService,
+  userService: UserService,
   credentialsProvider: CredentialsProvider,
   configuration: Configuration,
   clock: Clock,
@@ -39,7 +39,7 @@ class LoginController @Inject() (
 )
 extends AbstractController(cc) with I18nSupport {
 
-  case class EmployeeCreds(login: String, passwd: String, rememberMe: Boolean)
+  case class UserCreds(login: String, passwd: String, rememberMe: Boolean)
 
 
   val userForm = Form(
@@ -47,7 +47,7 @@ extends AbstractController(cc) with I18nSupport {
       "login" -> text,
       "passwd" -> text,
       "rememberMe" -> boolean
-    )(EmployeeCreds.apply)(EmployeeCreds.unapply)
+    )(UserCreds.apply)(UserCreds.unapply)
   )
 
   def loginForm() = Action { implicit request: Request[AnyContent] =>
@@ -67,7 +67,7 @@ extends AbstractController(cc) with I18nSupport {
         val credentials = Credentials(data.login, data.passwd)
         credentialsProvider.authenticate(credentials).flatMap { loginInfo =>
           val result = Redirect(routes.DashboardController.index())
-          employeeService.retrieve(loginInfo).flatMap {
+          userService.retrieve(loginInfo).flatMap {
             case Some(user) =>
               val c = configuration.underlying
               silhouette.env.authenticatorService.create(loginInfo).map {
