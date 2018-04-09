@@ -4,3 +4,12 @@ Project is based on play-scala-seed.g8
 Most of solutions are taken from:
 * https://github.com/mohiva/play-silhouette-seed
 * https://github.com/sbrunk/play-silhouette-slick-seed
+
+To get a bcrypt256 password hash:
+1) Navigate to project directory:
+    cd $project_dir
+2) Execute
+    sbt console
+2) Create hasher and calculate hash
+    val h = new com.mohiva.play.silhouette.password.BCryptSha256PasswordHasher
+    h.hash("1111")
