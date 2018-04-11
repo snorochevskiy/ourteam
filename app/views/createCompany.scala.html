@@ -1,0 +1,46 @@
+@import forms.CompanyForms._
+
+@(companyForm: Form[CompanyFormData])(implicit request: RequestHeader, messages: Messages)
+
+@main("Create new company") {
+    <h1>Create new company</h1>
+
+    @request.flash.get("error").map { msg =>
+        <div class="col-md-6 col-md-offset-3 alert alert-danger alert-error">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>@Messages("error")</strong> @msg
+        </div>
+    }
+
+    <div class="form-row">
+        <form method="POST" action="@controllers.routes.CompanyMgmtController.createCompanySubmit()">
+
+            @helper.CSRF.formField
+
+            <div class="form-group row">
+                <label for="inputId" class="col-sm-2 col-form-label">ID</label>
+                <div class="col-sm-10">
+                    <input type="text" name="id" value="@companyForm("id").value"
+                           class="form-control" id="inputId" pattern="[-_a-z]{1,16}"
+                           title="Invalid ID format. Should contain small characters, - and _" >
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                    <input type="text" name="name" value="@companyForm("name").value"
+                           class="form-control" id="inputName" >
+                </div>
+                <div class="invalid-feedback">@companyForm.error("name")</div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+}

@@ -39,39 +39,34 @@ class LoginController @Inject() (
 )
 extends AbstractController(cc) with I18nSupport {
 
-  case class UserCreds(login: String, passwd: String, rememberMe: Boolean)
+  case class LoginFormData(login: String, passwd: String, rememberMe: Boolean)
 
-
-  val userForm = Form(
+  val loginForm = Form(
     mapping(
       "login" -> text,
       "passwd" -> text,
       "rememberMe" -> boolean
-    )(UserCreds.apply)(UserCreds.unapply)
+    )(LoginFormData.apply)(LoginFormData.unapply)
   )
 
-  def loginForm() = Action { implicit request: Request[AnyContent] =>
+  def loginPage() = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.login())
   }
 
-  def view() = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
-    Future.successful(Ok(views.html.login()))
-  }
-
   def submitLogin() = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
-    userForm.bindFromRequest.fold(
-      form => {
+    loginForm.bindFromRequest.fold(
+      formError => {
         Future.successful(BadRequest(views.html.login()))
       },
-      data => {
-        val credentials = Credentials(data.login, data.passwd)
+      loginData => {
+        val credentials = Credentials(loginData.login, loginData.passwd)
         credentialsProvider.authenticate(credentials).flatMap { loginInfo =>
           val result = Redirect(routes.DashboardController.index())
           userService.retrieve(loginInfo).flatMap {
             case Some(user) =>
               val c = configuration.underlying
               silhouette.env.authenticatorService.create(loginInfo).map {
-                case authenticator if data.rememberMe =>
+                case authenticator if loginData.rememberMe =>
                   authenticator.copy(
                     expirationDateTime = clock.now + c.as[FiniteDuration]("silhouette.authenticator.rememberMe.authenticatorExpiry"),
                     idleTimeout = c.getAs[FiniteDuration]("silhouette.authenticator.rememberMe.authenticatorIdleTimeout"),
@@ -89,7 +84,7 @@ extends AbstractController(cc) with I18nSupport {
           }
         }.recover {
           case _: ProviderException =>
-            Redirect(routes.LoginController.view()).flashing("error" -> Messages("invalid.credentials"))
+            Redirect(routes.LoginController.loginPage()).flashing("error" -> Messages("invalid.credentials"))
         }
       }
     )

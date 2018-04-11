@@ -4,12 +4,16 @@ import javax.inject.Inject
 
 import com.mohiva.play.silhouette.api.LoginInfo
 import model.User
-import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import slick.jdbc.JdbcProfile
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class UserDaoImpl @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends UserDao with Dao {
+class UserDaoImpl @Inject()
+(
+  protected val dbConfigProvider: DatabaseConfigProvider
+) extends UserDao with UserTables with HasDatabaseConfigProvider[JdbcProfile] {
 
   import profile.api._ // required for ===
 

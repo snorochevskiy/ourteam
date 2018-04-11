@@ -5,14 +5,15 @@ import javax.inject.Inject
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.api.util.PasswordInfo
 import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
-import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import slick.jdbc.JdbcProfile
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class PasswordInfoDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
 (implicit
  ec: ExecutionContext
-) extends DelegableAuthInfoDAO[PasswordInfo] with Dao {
+) extends DelegableAuthInfoDAO[PasswordInfo] with UserTables with HasDatabaseConfigProvider[JdbcProfile] {
 
 
   import profile.api._

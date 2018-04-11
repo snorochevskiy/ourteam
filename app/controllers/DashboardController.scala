@@ -11,9 +11,11 @@ import play.api.mvc._
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DashboardController @Inject() (
+class DashboardController @Inject()
+(
   cc: ControllerComponents,
-    silhouette: Silhouette[DefaultEnv])
+  silhouette: Silhouette[DefaultEnv]
+)
 (implicit
    executionContext: ExecutionContext
 ) extends AbstractController(cc) {

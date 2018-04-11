@@ -10,7 +10,7 @@ import scala.concurrent.ExecutionContext
 
 
 @Singleton
-class StructureController @Inject() (companyDao: CompanyDao, cc: ControllerComponents)
+class OrganizationController @Inject() (companyDao: CompanyDao, cc: ControllerComponents)
                                (implicit executionContext: ExecutionContext)
   extends AbstractController(cc) {
 

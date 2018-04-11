@@ -12,11 +12,11 @@ import scala.concurrent.Future
 class AuthErrorHandler @Inject() (val messagesApi: MessagesApi) extends SecuredErrorHandler with I18nSupport {
 
   override def onNotAuthenticated(implicit request: RequestHeader) = {
-    Future.successful(Redirect(controllers.routes.LoginController.view()))
+    Future.successful(Redirect(controllers.routes.LoginController.loginPage()))
   }
 
   override def onNotAuthorized(implicit request: RequestHeader) = {
-    Future.successful(Redirect(controllers.routes.LoginController.view()).flashing("error" -> Messages("access.denied")))
+    Future.successful(Redirect(controllers.routes.LoginController.loginPage()).flashing("error" -> Messages("access.denied")))
   }
 
 }

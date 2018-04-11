@@ -4,6 +4,11 @@
 
 @main("List of all companies") {
     <h1>Companies</h1>
+
+    @if(true) { @* Should be only for admin user *@
+    <a href="/mgmt/create-company">Create new company</a>
+    }
+
     <table class="table">
         <thead>
             <tr>

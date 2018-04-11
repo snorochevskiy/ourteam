@@ -26,10 +26,10 @@
                 <div class="col-sm-4 my-auto">
                     <div class="card card-body d-table-cell align-middle">
                         <form method="POST" action="@controllers.routes.LoginController.submitLogin()">
-                            @helper.CSRF.formField
+                            @helper.CSRF.formField @* implicit RequestHeader required *@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Login</label>
-                                <input type="text" class="form-control" name="login"  placeholder="Enter your ID">
+                                <input type="text" class="form-control" name="login" placeholder="Enter your ID">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Password</label>
