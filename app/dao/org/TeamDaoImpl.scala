@@ -1,7 +1,7 @@
 package dao.org
 
 import javax.inject.Inject
-import model.{Team}
+import model.{Project, Team}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -22,7 +22,7 @@ class TeamDaoImpl @Inject()
     db.run(query.result)
   }
 
-  override def retrieve(id: String): Future[Option[Team]] = {
+  override def retrieve(id: Int): Future[Option[Team]] = {
     val query = for {
       team <- teams.filter(_.id === id)
     } yield team
@@ -36,4 +36,12 @@ class TeamDaoImpl @Inject()
     db.run(actions).map(_ => team)
   }
 
+  override def byEmployee(userId: String): Future[Option[(Team, Project)]] = {
+    val query = for {
+      employee <- employees.filter(_.userId === userId)
+      team <- teams.filter(_.id === employee.teamId)
+      project <- projects.filter(_.id === team.projectId)
+    } yield (team, project)
+    db.run(query.result.headOption)
+  }
 }

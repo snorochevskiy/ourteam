@@ -1,52 +1,48 @@
 # --- !Ups
 
-create table COMPANY (
-    ID VARCHAR(16) NOT NULL PRIMARY KEY,
-    NAME VARCHAR(256) NOT NULL
-);
-
 create table DEPARTMENT (
-    ID VARCHAR(16) NOT NULL PRIMARY KEY,
+    ID INTEGER NOT NULL PRIMARY KEY,
+    CODE VARCHAR(16) NOT NULL,
     NAME VARCHAR(256) NOT NULL,
     DESCRIPTION VARCHAR(4096)
 );
 
 create table PROJECT (
-    ID VARCHAR(16) NOT NULL PRIMARY KEY,
+    ID INTEGER NOT NULL PRIMARY KEY,
+    CODE VARCHAR(16) NOT NULL,
     NAME VARCHAR(256) NOT NULL,
     DESCRIPTION VARCHAR(4096),
-    DEPARTMENT_ID VARCHAR(16)
+    DEPARTMENT_ID INTEGER
 );
 
 create table TEAM (
-    ID VARCHAR(16) NOT NULL PRIMARY KEY,
+    ID INTEGER NOT NULL PRIMARY KEY,
+    CODE VARCHAR(16) NOT NULL,
     NAME VARCHAR(256) NOT NULL,
     DESCRIPTION VARCHAR(4096),
-    PROJECT_ID VARCHAR(16)
+    PROJECT_ID INTEGER
 );
 
 create table EMPLOYEE (
     USER_ID VARCHAR(16),
     FUNCTIONAL_ROLE VARCHAR(256) NOT NULL,
-    TEAM_ID VARCHAR(16)
+    TEAM_ID INTEGER
 );
 
 
-insert into COMPANY (ID, NAME) VALUES ('tpm', 'The Product Motor');
+insert into DEPARTMENT (ID, CODE, NAME, DESCRIPTION) VALUES (1, 'cascom', 'Cascom', 'Most hated company');
 
-insert into DEPARTMENT (ID, NAME, DESCRIPTION) VALUES ('cascom', 'Cascom', 'Most hated company');
+insert into PROJECT (ID, CODE, NAME, DESCRIPTION, DEPARTMENT_ID) VALUES (1, 'cnt', 'Cascom Network Technologies', '', 1);
 
-insert into PROJECT (ID, NAME, DESCRIPTION, DEPARTMENT_ID) VALUES ('cnt', 'Cascom Network Technologies', '', 'cascom');
-
-insert into TEAM (ID, NAME, DESCRIPTION, PROJECT_ID) VALUES
-  ('backend', 'Backend services', '', 'cnt'),
-  ('di', 'Device Investigation', '', 'cnt'),
-  ('discovery', 'Solutions Discovery', '', 'cnt');
+insert into TEAM (ID, CODE, NAME, DESCRIPTION, PROJECT_ID) VALUES
+  (1, 'backend', 'Backend services', '', 1),
+  (2, 'di', 'Device Investigation', '', 1),
+  (3, 'discovery', 'Solutions Discovery', '', 1);
 
 insert into EMPLOYEE (TEAM_ID, USER_ID, FUNCTIONAL_ROLE) VALUES
-  ('backend', 'snoro', 'developer'),
-  ('di', 'vsoko', 'developer'),
-  ('discovery', 'vkisl', 'developer');
+  (1, 'snoro', 'developer'),
+  (2, 'vsoko', 'developer'),
+  (3, 'vkisl', 'developer');
 
 # --- !Downs
 

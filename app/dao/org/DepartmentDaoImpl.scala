@@ -1,7 +1,7 @@
 package dao.org
 
 import javax.inject.Inject
-import model.{Company, Department}
+import model.{Department}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -22,7 +22,7 @@ class DepartmentDaoImpl @Inject()
     db.run(query.result)
   }
 
-  override def retrieve(id: String): Future[Option[Department]] = {
+  override def retrieve(id: Int): Future[Option[Department]] = {
     val query = for {
       department <- departments.filter(_.id === id)
     } yield department

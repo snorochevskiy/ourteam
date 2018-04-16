@@ -17,7 +17,7 @@ import com.mohiva.play.silhouette.impl.util.{DefaultFingerprintGenerator, Secure
 import com.mohiva.play.silhouette.persistence.daos.{DelegableAuthInfoDAO, InMemoryAuthInfoDAO}
 import com.mohiva.play.silhouette.persistence.repositories.DelegableAuthInfoRepository
 import dao._
-import dao.org.{EmployeeDao, EmployeeDaoImpl}
+import dao.org.{EmployeeDao, EmployeeDaoImpl, TeamDao, TeamDaoImpl}
 import net.codingwell.scalaguice.ScalaModule
 import play.api.Configuration
 import play.api.mvc.CookieHeaderEncoding
@@ -38,6 +38,7 @@ class MainModule extends AbstractModule with ScalaModule {
     bind[UserDao].to[UserDaoImpl]
     bind[UserService].to[UserServiceImpl]
 
+    bind[TeamDao].to[TeamDaoImpl]
     bind[EmployeeDao].to[EmployeeDaoImpl]
     bind[EmployeeService].to[EmployeeServiceImpl]
 

@@ -7,7 +7,7 @@ import scala.concurrent.Future
 trait DepartmentDao {
   def all(): Future[Seq[Department]]
 
-  def retrieve(id: String): Future[Option[Department]]
+  def retrieve(id: Int): Future[Option[Department]]
 
   def save(department: Department): Future[Department]
 }

@@ -29,9 +29,9 @@ create table PASSWORD_INFO(
 
 insert into DB_USER(ID, EMAIL, FIRST_NAME, LAST_NAME, MIDDLE_NAME, AVATAR_URL) VALUES
   ('admin', '', '', '', '', ''),
-  ('snoro', 'snoroc@tpm.com', 'Stas', 'Noro', 'Michael', ''),
-  ('vsoko', 'vsokol@tpm.com', 'Vladimir', 'Soko', 'Batkovich', ''),
-  ('vkisl', 'vkisly@tpm.com', 'Vladislav', 'Kisl', 'Batkovich', ''),
+  ('snoro', 'snoro@tpm.com', 'Stas', 'Noro', 'Michael', ''),
+  ('vsoko', 'vsoko@tpm.com', 'Vladimir', 'Soko', 'Batkovich', ''),
+  ('vkisl', 'vkisl@tpm.com', 'Vladislav', 'Kisl', 'Batkovich', ''),
   ('yzasu', 'yzasu@tpm.com', 'Yuri', 'Zasu', 'Batkovich', '');
 
 insert into LOGIN_INFO(ID, PROVIDER_ID, PROVIDER_KEY) VALUES

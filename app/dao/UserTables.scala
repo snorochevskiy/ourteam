@@ -1,10 +1,7 @@
 package dao
 
 import com.mohiva.play.silhouette.api.LoginInfo
-import model.{Company, Department}
 import slick.jdbc.JdbcProfile
-
-import scala.concurrent.Future
 
 trait UserTables {
 

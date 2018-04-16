@@ -7,7 +7,7 @@ import scala.concurrent.Future
 trait ProjectDao {
   def all(): Future[Seq[Project]]
 
-  def retrieve(id: String): Future[Option[Project]]
+  def retrieve(id: Int): Future[Option[Project]]
 
   def save(project: Project): Future[Project]
 }
