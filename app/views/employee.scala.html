@@ -1,0 +1,47 @@
+@import model.Employee
+@import model.User
+
+@(user: User, maybeEmployee: Option[Employee])
+
+@main("Employee info") {
+    <h1>Employee info</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th scope="row">ID</th>
+                <td>@user.id</td>
+            </tr>
+            <tr>
+                <th scope="row">First name</th>
+                <td>@user.firstName</td>
+            </tr>
+            <tr>
+                <th scope="row">Last name</th>
+                <td>@user.lastName</td>
+            </tr>
+            <tr>
+                <th scope="row">Middle name</th>
+                <td>@user.middleName</td>
+            </tr>
+            <tr>
+                <th scope="row">Email</th>
+                <td>@user.email</td>
+            </tr>
+            <tr>
+                <th scope="row">Team</th>
+                <td>
+                @maybeEmployee match {
+                    case Some(employee) => {
+                        @employee.teamId
+                    }
+                    case None => {
+                        No team
+                    }
+                }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+}

@@ -17,13 +17,14 @@ import com.mohiva.play.silhouette.impl.util.{DefaultFingerprintGenerator, Secure
 import com.mohiva.play.silhouette.persistence.daos.{DelegableAuthInfoDAO, InMemoryAuthInfoDAO}
 import com.mohiva.play.silhouette.persistence.repositories.DelegableAuthInfoRepository
 import dao._
+import dao.org.{EmployeeDao, EmployeeDaoImpl}
 import net.codingwell.scalaguice.ScalaModule
 import play.api.Configuration
 import play.api.mvc.CookieHeaderEncoding
 import service.{UserService, UserServiceImpl}
 import net.ceedubs.ficus.Ficus._
 import net.ceedubs.ficus.readers.ArbitraryTypeReader._
-import service.organization.{CompanyService, CompanyServiceImpl}
+import service.organization.{EmployeeService, EmployeeServiceImpl}
 import util.AuthErrorHandler
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -37,8 +38,8 @@ class MainModule extends AbstractModule with ScalaModule {
     bind[UserDao].to[UserDaoImpl]
     bind[UserService].to[UserServiceImpl]
 
-    bind[CompanyDao].to[CompanyDaoImpl]
-    bind[CompanyService].to[CompanyServiceImpl]
+    bind[EmployeeDao].to[EmployeeDaoImpl]
+    bind[EmployeeService].to[EmployeeServiceImpl]
 
     bind[IDGenerator].toInstance(new SecureRandomIDGenerator())
     //bind[PasswordHasher].toInstance(new BCryptPasswordHasher)

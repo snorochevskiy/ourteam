@@ -31,19 +31,22 @@ insert into DB_USER(ID, EMAIL, FIRST_NAME, LAST_NAME, MIDDLE_NAME, AVATAR_URL) V
   ('admin', '', '', '', '', ''),
   ('snoro', 'snoroc@tpm.com', 'Stas', 'Noro', 'Michael', ''),
   ('vsoko', 'vsokol@tpm.com', 'Vladimir', 'Soko', 'Batkovich', ''),
-  ('vkisl', 'vkisly@tpm.com', 'Vladislav', 'Kisl', 'Batkovich', '');;
+  ('vkisl', 'vkisly@tpm.com', 'Vladislav', 'Kisl', 'Batkovich', ''),
+  ('yzasu', 'yzasu@tpm.com', 'Yuri', 'Zasu', 'Batkovich', '');
 
 insert into LOGIN_INFO(ID, PROVIDER_ID, PROVIDER_KEY) VALUES
   (1, 'credentials', 'admin'),
   (2, 'credentials', 'snoro'),
   (3, 'credentials', 'vsoko'),
-  (4, 'credentials', 'vkisl'),;
+  (4, 'credentials', 'vkisl'),
+  (5, 'credentials', 'yzasu');
 
 insert into USER_LOGIN_INFO(USER_ID, LOGIN_INFO_ID) VALUES
   ('admin', 1),
   ('snoro', 2),
   ('vsoko', 3),
-  ('vkisl', 4);
+  ('vkisl', 4),
+  ('yzasu', 5);
 
 -- BCryptSha256PasswordHasher: password=1111 logRounds=10
 
@@ -51,7 +54,8 @@ insert into PASSWORD_INFO(HASHER, PASSWORD, SALT, LOGIN_INFO_ID) VALUES
   ('bcrypt-sha256', '$2a$10$4LkxegKhm7vmPJhsPAyN2OMIK06Xq6aLYL7kPjLnQ8sgy78age/vW', NULL, 1),
   ('bcrypt-sha256', '$2a$10$4LkxegKhm7vmPJhsPAyN2OMIK06Xq6aLYL7kPjLnQ8sgy78age/vW', NULL, 2),
   ('bcrypt-sha256', '$2a$10$4LkxegKhm7vmPJhsPAyN2OMIK06Xq6aLYL7kPjLnQ8sgy78age/vW', NULL, 3),
-  ('bcrypt-sha256', '$2a$10$4LkxegKhm7vmPJhsPAyN2OMIK06Xq6aLYL7kPjLnQ8sgy78age/vW', NULL, 4);
+  ('bcrypt-sha256', '$2a$10$4LkxegKhm7vmPJhsPAyN2OMIK06Xq6aLYL7kPjLnQ8sgy78age/vW', NULL, 4),
+  ('bcrypt-sha256', '$2a$10$4LkxegKhm7vmPJhsPAyN2OMIK06Xq6aLYL7kPjLnQ8sgy78age/vW', NULL, 5);
 
 
 # --- !Downs

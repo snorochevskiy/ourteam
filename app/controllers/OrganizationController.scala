@@ -1,23 +1,41 @@
 package controllers
 
+import auth.DefaultEnv
+import com.mohiva.play.silhouette.api.Silhouette
+import com.mohiva.play.silhouette.api.actions.SecuredRequest
+import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import javax.inject._
-
-import dao.{CompanyDao, Dao}
-import play.api._
+import dao.org.CompanyDao
+import model.{Employee, User}
+import play.api.i18n.Messages
 import play.api.mvc._
+import service.organization.EmployeeService
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
-class OrganizationController @Inject() (companyDao: CompanyDao, cc: ControllerComponents)
-                               (implicit executionContext: ExecutionContext)
-  extends AbstractController(cc) {
+class OrganizationController @Inject()
+(
+  employeeService: EmployeeService,
+  cc: ControllerComponents,
+  silhouette: Silhouette[DefaultEnv]
+)
+( implicit
+  ec: ExecutionContext
+) extends AbstractController(cc) {
 
 
-  def listCompanies() = Action.async {
-    companyDao.all().map { case companies => Ok(views.html.companies(companies)) }
-
+  def me() = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
+    println(request.identity)
+    val user: User = request.identity
+    employeeService.retrieve(user.id).flatMap{
+      case maybeEmployee:Option[Employee] => Future.successful(Ok(views.html.employee(user, maybeEmployee)))
+    }.recover {
+      case e: Exception =>
+        // TODO: create dedicated error page? Embed error header to main veiew?
+        Redirect(routes.DashboardController.index()).flashing("error" -> e.getMessage)
+    }
   }
 
 }

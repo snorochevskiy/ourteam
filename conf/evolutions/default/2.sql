@@ -8,8 +8,7 @@ create table COMPANY (
 create table DEPARTMENT (
     ID VARCHAR(16) NOT NULL PRIMARY KEY,
     NAME VARCHAR(256) NOT NULL,
-    DESCRIPTION VARCHAR(4096),
-    COMPANY_ID VARCHAR(16)
+    DESCRIPTION VARCHAR(4096)
 );
 
 create table PROJECT (
@@ -27,16 +26,15 @@ create table TEAM (
 );
 
 create table EMPLOYEE (
-    ID INTEGER NOT NULL PRIMARY KEY,
-    FUNCTIONAL_ROLE VARCHAR(256) NOT NULL,
     USER_ID VARCHAR(16),
+    FUNCTIONAL_ROLE VARCHAR(256) NOT NULL,
     TEAM_ID VARCHAR(16)
 );
 
 
 insert into COMPANY (ID, NAME) VALUES ('tpm', 'The Product Motor');
 
-insert into DEPARTMENT (ID, NAME, COMPANY_ID) VALUES ('cascom', 'Cascom', 'tpm');
+insert into DEPARTMENT (ID, NAME, DESCRIPTION) VALUES ('cascom', 'Cascom', 'Most hated company');
 
 insert into PROJECT (ID, NAME, DESCRIPTION, DEPARTMENT_ID) VALUES ('cnt', 'Cascom Network Technologies', '', 'cascom');
 
@@ -45,10 +43,10 @@ insert into TEAM (ID, NAME, DESCRIPTION, PROJECT_ID) VALUES
   ('di', 'Device Investigation', '', 'cnt'),
   ('discovery', 'Solutions Discovery', '', 'cnt');
 
-insert into EMPLOYEE (ID, FUNCTIONAL_ROLE, USER_ID, TEAM_ID) VALUES
-  (1, 'developer', 'snoro', 'backend'),
-  (2, 'di', 'vsoko', 'backend'),
-  (3, 'discovery', 'vkisl', 'backend');
+insert into EMPLOYEE (TEAM_ID, USER_ID, FUNCTIONAL_ROLE) VALUES
+  ('backend', 'snoro', 'developer'),
+  ('di', 'vsoko', 'developer'),
+  ('discovery', 'vkisl', 'developer');
 
 # --- !Downs
 

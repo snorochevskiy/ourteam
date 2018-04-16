@@ -1,7 +1,6 @@
-package dao
+package dao.org
 
 import javax.inject.Inject
-
 import model.Company
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile

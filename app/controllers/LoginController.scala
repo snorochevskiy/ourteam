@@ -1,10 +1,10 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-
 import auth.DefaultEnv
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.Authenticator.Implicits._
+import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.api.{LoginEvent, Silhouette}
 import com.mohiva.play.silhouette.api.util.{Clock, Credentials}
@@ -88,6 +88,12 @@ extends AbstractController(cc) with I18nSupport {
         }
       }
     )
+  }
+
+  def signOut = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
+    val result = Redirect(routes.LoginController.loginPage())
+    silhouette.env.eventBus.publish(LogoutEvent(request.identity, request))
+    silhouette.env.authenticatorService.discard(request.authenticator, result)
   }
 
 }
