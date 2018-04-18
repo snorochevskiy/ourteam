@@ -12,6 +12,7 @@ GET         /signout                controllers.LoginController.signOut
 GET     /                           controllers.DashboardController.index
 GET     /org/me                     controllers.OrganizationController.me
 GET     /org/my-team                controllers.OrganizationController.myTeam
+GET     /org/project/:projectId     controllers.OrganizationController.projectInfo(projectId: Int)
 
 
 # Map static resources from the /public folder to the /assets URL path

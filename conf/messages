@@ -1,2 +1,4 @@
 # https://www.playframework.com/documentation/latest/ScalaI18N
 invalid.credentials = Invalid credentials
+team.notFound = Unable to find requested team
+project.notFound = Unable to find request project

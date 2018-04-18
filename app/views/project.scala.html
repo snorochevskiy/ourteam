@@ -1,0 +1,38 @@
+@import model.Team
+@import model.Project
+@import model.Department
+
+@(project: Project, departemtn:Department, teams:Seq[Team])
+
+@main("Project info") {
+    <h1>Project info</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th scope="row">Code</th>
+                <td>@project.code</td>
+            </tr>
+            <tr>
+                <th scope="row">Name</th>
+                <td>@project.name</td>
+            </tr>
+            <tr>
+                <th scope="row">Department</th>
+                <td>@departemtn.code - @departemtn.name</td> @* TODO: make as link*@
+            </tr>
+            <tr>
+                <th scope="row">Description</th>
+                <td>@project.description</td>
+            </tr>
+            <tr>
+                <th scope="row">Teams</th>
+                <td>
+                    @for(team <-teams) {
+                        @team.code - @team.name <br> @* TODO: make as link*@
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

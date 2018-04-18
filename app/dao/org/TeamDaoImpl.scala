@@ -17,10 +17,7 @@ class TeamDaoImpl @Inject()
 
   import profile.api._
 
-  override def all(): Future[Seq[Team]] = {
-    val query = for { team <- teams } yield team
-    db.run(query.result)
-  }
+  override def all(): Future[Seq[Team]] = db run teams.result
 
   override def retrieve(id: Int): Future[Option[Team]] = {
     val query = for {
@@ -44,4 +41,6 @@ class TeamDaoImpl @Inject()
     } yield (team, project)
     db.run(query.result.headOption)
   }
+
+  override def byProject(projectId: Int): Future[Seq[Team]] = db run teams.filter(_.projectId === projectId).result
 }

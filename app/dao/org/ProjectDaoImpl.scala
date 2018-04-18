@@ -1,7 +1,7 @@
 package dao.org
 
 import javax.inject.Inject
-import model.{Project}
+import model.{Department, Project, Team}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -35,4 +35,11 @@ class ProjectDaoImpl @Inject()
     } yield ()).transactionally
     db.run(actions).map(_ => project)
   }
+
+  override def retrieveWithDepartment(id: Int): Future[Option[(Project, Department)]] =
+    db run (for (
+      project <- projects if project.id === id;
+      department <- departments if department.id === project.departmentId
+    ) yield (project, department)).result.headOption
+
 }
