@@ -9,7 +9,7 @@ trait OrganizationTables {
   import driver.api._
 
   class DepartmentTable(tag: Tag) extends Table[Department](tag, "DEPARTMENT"){
-    def id = column[Int]("ID", O.PrimaryKey)
+    def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
     def code = column[String]("CODE")
     def name = column[String]("NAME")
     def description = column[String]("DESCRIPTION")
@@ -19,7 +19,7 @@ trait OrganizationTables {
 
 
   class ProjectTable(tag: Tag) extends Table[Project](tag, "PROJECT"){
-    def id = column[Int]("ID", O.PrimaryKey)
+    def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
     def departmentId = column[Int]("DEPARTMENT_ID")
     def code = column[String]("CODE")
     def name = column[String]("NAME")
@@ -32,7 +32,7 @@ trait OrganizationTables {
 
 
   class TeamTable(tag: Tag) extends Table[Team](tag, "TEAM") {
-    def id = column[Int]("ID", O.PrimaryKey)
+    def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
     def projectId = column[Int]("PROJECT_ID")
     def code = column[String]("CODE")
     def name = column[String]("NAME")

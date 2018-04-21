@@ -11,7 +11,9 @@ trait TeamDao {
 
   def save(team: Team): Future[Team]
 
-  def byEmployee(userId: String): Future[Option[(Team, Project)]]
+  def byEmployee(userId: String): Future[Option[(Team)]]
+
+  def retrieveWithProject(id: Int): Future[Option[(Team, Project)]]
 
   def byProject(projectId: Int): Future[Seq[Team]]
 }

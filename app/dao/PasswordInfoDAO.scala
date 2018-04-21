@@ -20,17 +20,17 @@ class PasswordInfoDAO @Inject() (protected val dbConfigProvider: DatabaseConfigP
 
   protected def passwordInfoQuery(loginInfo: LoginInfo) = for {
     dbLoginInfo <- loginInfoQuery(loginInfo)
-    dbPasswordInfo <- slickPasswordInfos if dbPasswordInfo.loginInfoId === dbLoginInfo.id
+    dbPasswordInfo <- passwordInfos if dbPasswordInfo.loginInfoId === dbLoginInfo.id
   } yield dbPasswordInfo
 
   // Use subquery workaround instead of join to get authinfo because slick only supports selecting
   // from a single table for update/delete queries (https://github.com/slick/slick/issues/684).
   protected def passwordInfoSubQuery(loginInfo: LoginInfo) =
-    slickPasswordInfos.filter(_.loginInfoId in loginInfoQuery(loginInfo).map(_.id))
+    passwordInfos.filter(_.loginInfoId in loginInfoQuery(loginInfo).map(_.id))
 
   protected def addAction(loginInfo: LoginInfo, authInfo: PasswordInfo) =
     loginInfoQuery(loginInfo).result.head.flatMap { dbLoginInfo =>
-      slickPasswordInfos +=
+      passwordInfos +=
         DBPasswordInfo(authInfo.hasher, authInfo.password, authInfo.salt, dbLoginInfo.id.get)
     }.transactionally
 
@@ -54,7 +54,7 @@ class PasswordInfoDAO @Inject() (protected val dbConfigProvider: DatabaseConfigP
     db.run(updateAction(loginInfo, authInfo)).map(_ => authInfo)
 
   override def save(loginInfo: LoginInfo, authInfo: PasswordInfo): Future[PasswordInfo] = {
-    val query = loginInfoQuery(loginInfo).joinLeft(slickPasswordInfos).on(_.id === _.loginInfoId)
+    val query = loginInfoQuery(loginInfo).joinLeft(passwordInfos).on(_.id === _.loginInfoId)
     val action = query.result.head.flatMap {
       case (dbLoginInfo, Some(dbPasswordInfo)) => updateAction(loginInfo, authInfo)
       case (dbLoginInfo, None) => addAction(loginInfo, authInfo)

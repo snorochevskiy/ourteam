@@ -1,0 +1,33 @@
+@import model.Employee
+@import model.User
+@import model.ContactInfo
+
+@(teamMembers: Seq[(Employee, User, Option[ContactInfo])])(implicit request: RequestHeader, messages: Messages )
+
+@main("Team Members") {
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Location</th>
+                <th scope="col">Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for((empl, user, maybeContactInfo) <- teamMembers) {
+            <tr>
+                <td>@user.id</td>
+                <td>@user.firstName</td>
+                <td>@user.lastName</td>
+                <td>@user.email</td>
+                <td>@maybeContactInfo.map(_.location)</td>
+                <td>@maybeContactInfo.map(_.phone1)</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

@@ -4,7 +4,6 @@ import javax.inject._
 
 import auth.DefaultEnv
 import com.mohiva.play.silhouette.api.Silhouette
-import dao.Dao
 import play.api._
 import play.api.mvc._
 

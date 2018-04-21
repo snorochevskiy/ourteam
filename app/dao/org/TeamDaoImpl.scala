@@ -33,14 +33,21 @@ class TeamDaoImpl @Inject()
     db.run(actions).map(_ => team)
   }
 
-  override def byEmployee(userId: String): Future[Option[(Team, Project)]] = {
+  override def byEmployee(userId: String): Future[Option[(Team)]] = {
     val query = for {
       employee <- employees.filter(_.userId === userId)
       team <- teams.filter(_.id === employee.teamId)
-      project <- projects.filter(_.id === team.projectId)
-    } yield (team, project)
+    } yield (team)
     db.run(query.result.headOption)
   }
 
   override def byProject(projectId: Int): Future[Seq[Team]] = db run teams.filter(_.projectId === projectId).result
+
+  override def retrieveWithProject(id: Int): Future[Option[(Team, Project)]] = {
+    val query = for {
+      team <- teams.filter(_.id === id)
+      project <- projects.filter(_.id === team.projectId)
+    } yield (team, project)
+    db.run(query.result.headOption)
+  }
 }

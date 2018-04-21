@@ -1,6 +1,7 @@
 package dao
 
 import com.mohiva.play.silhouette.api.LoginInfo
+import model.{ContactInfo, DBLoginInfo, DBUserLoginInfo, User}
 import slick.jdbc.JdbcProfile
 
 trait UserTables {
@@ -8,25 +9,17 @@ trait UserTables {
   protected val driver: JdbcProfile
   import driver.api._
 
-  // We can't persist loginInfo = LoginInfo from Emploee class using Slick,
-  // that's why this class is required
-  // https://github.com/sbrunk/play-silhouette-slick-seed/blob/master/app/models/daos/DBTableDefinitions.scala
-  case class DbUser(id: String, email: String, firstName:String, lastName: String, middleName: String,
-    avatarURL: String)
-
-  class UserTable(tag: Tag) extends Table[DbUser](tag, "DB_USER") {
+  class UserTable(tag: Tag) extends Table[User](tag, "DB_USER") {
     def id = column [String]("ID", O.PrimaryKey)
     def email = column[String]("EMAIL")
     def firstName = column[String]("FIRST_NAME")
     def lastName = column[String]("LAST_NAME")
     def middleName = column[String]("MIDDLE_NAME")
     def avatarURL = column[String]("AVATAR_URL")
-    override def * = (id,email,firstName,lastName,middleName,avatarURL) <> (DbUser.tupled, DbUser.unapply)
+    override def * = (id,email,firstName,lastName,middleName,avatarURL) <> (User.tupled, User.unapply)
   }
+  val users = TableQuery[UserTable]
 
-  val slickUsers = TableQuery[UserTable]
-
-  case class DBLoginInfo (id: Option[Long], providerID: String, providerKey: String)
 
   class LoginInfos(tag: Tag) extends Table[DBLoginInfo](tag, "LOGIN_INFO") {
     def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)
@@ -34,22 +27,19 @@ trait UserTables {
     def providerKey = column[String]("PROVIDER_KEY")
     def * = (id.?, providerID, providerKey) <> (DBLoginInfo.tupled, DBLoginInfo.unapply)
   }
+  val loginInfos = TableQuery[LoginInfos]
 
-  val slickLoginInfos = TableQuery[LoginInfos]
-
-  case class DBUserLoginInfo (userID: String, loginInfoId: Long)
 
   class UserLoginInfos(tag: Tag) extends Table[DBUserLoginInfo](tag, "USER_LOGIN_INFO") {
     def userID = column[String]("USER_ID")
     def loginInfoId = column[Long]("LOGIN_INFO_ID")
     def * = (userID, loginInfoId) <> (DBUserLoginInfo.tupled, DBUserLoginInfo.unapply)
   }
-
-  val slickUserLoginInfos = TableQuery[UserLoginInfos]
+  val userLoginInfos = TableQuery[UserLoginInfos]
 
   // TODO: move to DAO
   def loginInfoQuery(loginInfo: LoginInfo) =
-    slickLoginInfos.filter(dbLoginInfo =>
+    loginInfos.filter(dbLoginInfo =>
       dbLoginInfo.providerID === loginInfo.providerID && dbLoginInfo.providerKey === loginInfo.providerKey)
 
   case class DBPasswordInfo (
@@ -66,16 +56,20 @@ trait UserTables {
     def loginInfoId = column[Long]("LOGIN_INFO_ID")
     def * = (hasher, password, salt, loginInfoId) <> (DBPasswordInfo.tupled, DBPasswordInfo.unapply)
   }
-  val slickPasswordInfos = TableQuery[PasswordInfos]
+  val passwordInfos = TableQuery[PasswordInfos]
 
-  // TODO: add contact info
-  //def phone1 = column[String]("PHONE1")
-  //def phone2 = column[String]("PHONE2")
-  //def phone3 = column[String]("PHONE3")
-  //def hangouts = column[String]("HANGOUTS")
-  //def skype = column[String]("SKYPE")
-  //def telegram = column[String]("TELEGRAM")
-  //def viber = column[String]("VIBER")
-  //def line = column[String]("LINE)
-
+  class ContactInfoTable(tag: Tag) extends Table[ContactInfo](tag, "USER_CONTACT_INFO") {
+    def userId = column[String]("USER_ID")
+    def location = column[String]("LOCATION")
+    def phone1 = column[String]("PHONE1")
+    def phone2 = column[String]("PHONE2")
+    def phone3 = column[String]("PHONE3")
+    def skype = column[String]("SKYPE")
+    def telegram = column[String]("TELEGRAM")
+    def viber = column[String]("VIBER")
+    def line = column[String]("LINE")
+    override def * = (userId,location,phone1,phone2,phone3,skype,telegram,viber,line) <>
+      (ContactInfo.tupled, ContactInfo.unapply)
+  }
+  val contactInfos = TableQuery[ContactInfoTable]
 }

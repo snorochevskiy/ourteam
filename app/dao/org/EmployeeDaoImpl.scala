@@ -1,7 +1,8 @@
 package dao.org
 
+import dao.UserTables
 import javax.inject.Inject
-import model.{Employee}
+import model.{ContactInfo, Employee, User, UserIdentity}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -13,7 +14,7 @@ class EmployeeDaoImpl  @Inject()
 )
 ( implicit
   ec: ExecutionContext
-) extends EmployeeDao with OrganizationTables with HasDatabaseConfigProvider[JdbcProfile] {
+) extends EmployeeDao with OrganizationTables with UserTables with HasDatabaseConfigProvider[JdbcProfile] {
 
   import profile.api._
 
@@ -35,4 +36,16 @@ class EmployeeDaoImpl  @Inject()
     } yield ()).transactionally
     db.run(actions).map(_ => employee)
   }
+
+  override def teamMembers(teamId: Int): Future[Seq[(Employee, User, Option[ContactInfo])]] = {
+      val query = for (
+        ((employee, user),contactInfo) <- employees join
+          users on (_.userId === _.id) joinLeft
+          contactInfos on (_._2.id === _.userId)
+        if employee.teamId === teamId
+      ) yield (employee, user, contactInfo)
+      db run query.result
+    }
+
+
 }

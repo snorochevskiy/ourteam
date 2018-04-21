@@ -27,12 +27,27 @@ create table PASSWORD_INFO(
     LOGIN_INFO_ID INTEGER
 );
 
+create table USER_CONTACT_INFO(
+    USER_ID varchar(16) not null,
+    LOCATION varchar(256),
+    PHONE1 varchar(12),
+    PHONE2 varchar(12),
+    PHONE3 varchar(12),
+    SKYPE varchar(64),
+    TELEGRAM varchar(64),
+    VIBER varchar(12),
+    LINE varchar(64)
+);
+
 insert into DB_USER(ID, EMAIL, FIRST_NAME, LAST_NAME, MIDDLE_NAME, AVATAR_URL) VALUES
   ('admin', '', '', '', '', ''),
   ('snoro', 'snoro@tpm.com', 'Stas', 'Noro', 'Michael', ''),
   ('vsoko', 'vsoko@tpm.com', 'Vladimir', 'Soko', 'Batkovich', ''),
   ('vkisl', 'vkisl@tpm.com', 'Vladislav', 'Kisl', 'Batkovich', ''),
   ('yzasu', 'yzasu@tpm.com', 'Yuri', 'Zasu', 'Batkovich', '');
+
+insert into USER_CONTACT_INFO(USER_ID, LOCATION, PHONE1, PHONE2, PHONE3, SKYPE, TELEGRAM, VIBER, LINE) VALUES
+  ('snoro', 'Ukraine - Odessa', '+80671234567', '', '', '', '', '', '');
 
 insert into LOGIN_INFO(ID, PROVIDER_ID, PROVIDER_KEY) VALUES
   (1, 'credentials', 'admin'),

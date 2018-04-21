@@ -2,16 +2,16 @@ package service
 
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.api.services.IdentityService
-import model.User
+import model.UserIdentity
 
 import scala.concurrent.Future
 
-trait UserService extends IdentityService[User] {
+trait UserService extends IdentityService[UserIdentity] {
 
-  def retrieve(id: String): Future[Option[User]]
+  def retrieve(id: String): Future[Option[UserIdentity]]
 
-  def retrieve(loginInfo: LoginInfo): Future[Option[User]]
+  def retrieve(loginInfo: LoginInfo): Future[Option[UserIdentity]]
 
-  def save(user: User): Future[User]
+  def save(user: UserIdentity): Future[UserIdentity]
 
 }

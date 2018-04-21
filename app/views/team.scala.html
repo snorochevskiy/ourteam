@@ -24,6 +24,10 @@
                 <th scope="row">Description</th>
                 <td>@team.description</td>
             </tr>
+            <tr>
+                <th scope="row">Team members</th>
+                <td><a href="@controllers.routes.OrganizationController.teamMembers(team.id)" >See</a></td>
+            </tr>
         </tbody>
     </table>
 }
