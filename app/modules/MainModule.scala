@@ -38,9 +38,13 @@ class MainModule extends AbstractModule with ScalaModule {
     bind[UserDao].to[UserDaoImpl]
     bind[UserService].to[UserServiceImpl]
 
+    bind[DepartmentDao].to[DepartmentDaoImpl]
+
     bind[ProjectDao].to[ProjectDaoImpl]
     bind[ProjectService].to[ProjectServiceImpl]
+
     bind[TeamDao].to[TeamDaoImpl]
+
     bind[EmployeeDao].to[EmployeeDaoImpl]
     bind[EmployeeService].to[EmployeeServiceImpl]
 

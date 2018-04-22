@@ -1,0 +1,34 @@
+@import model.Department
+
+@(department: Department)(implicit request: RequestHeader, messages: Messages )
+
+@main("Department info") {
+
+    <h1>Department info</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th scope="row">ID</th>
+                <td>@department.id</td>
+            </tr>
+            <tr>
+                <th scope="row">Code</th>
+                <td>@department.code</td>
+            </tr>
+            <tr>
+                <th scope="row">Name</th>
+                <td>@department.name</td>
+            </tr>
+            <tr>
+                <th scope="row">Description</th>
+                <td>@department.description</td>
+            </tr>
+            <tr>
+                <th scope="row">Projects</th>
+                <td><a href="@controllers.routes.OrganizationController.departmentProjects(department.id)" >See</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+}

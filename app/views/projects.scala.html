@@ -1,0 +1,29 @@
+@import model.Project
+
+@(projects: Seq[Project])(implicit request: RequestHeader, messages: Messages )
+
+@main("Projects") {
+
+    <h1>Projects</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Code</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for(project <- projects) {
+            <tr>
+                <td>@project.id</td>
+                <td>@project.code</td>
+                <td>@project.name</td>
+                <td>@project.description</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

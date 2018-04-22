@@ -42,4 +42,14 @@ class ProjectDaoImpl @Inject()
       department <- departments if department.id === project.departmentId
     ) yield (project, department)).result.headOption
 
+  override def byDepartmentId(departmentId: Int): Future[Seq[Project]] = {
+    db run projects.filter(_.departmentId === departmentId).result
+  }
+
+  override def byUserId(userId: String): Future[Option[Project]] =
+    db run (for (
+      employee <- employees if employee.userId === userId;
+      team <- teams if team.id === employee.teamId;
+      project <- projects if project.id === team.projectId
+    ) yield project).result.headOption
 }

@@ -1,0 +1,27 @@
+@import model.Department
+
+@(departments: Seq[Department])(implicit request: RequestHeader, messages: Messages )
+
+@main("Departments") {
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Code</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for(department <- departments) {
+            <tr>
+                <td>@department.id</td>
+                <td>@department.code</td>
+                <td>@department.name</td>
+                <td>@department.description</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

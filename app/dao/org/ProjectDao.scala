@@ -9,7 +9,11 @@ trait ProjectDao {
 
   def retrieve(id: Int): Future[Option[Project]]
 
-  def retrieveWithDepartment(id: Int):Future[Option[(Project, Department)]]
+  def retrieveWithDepartment(id: Int): Future[Option[(Project, Department)]]
+
+  def byDepartmentId(departmentId: Int): Future[Seq[Project]]
+
+  def byUserId(userId: String): Future[Option[Project]]
 
   def save(project: Project): Future[Project]
 }

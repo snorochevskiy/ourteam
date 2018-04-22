@@ -9,13 +9,17 @@ GET         /signin                 controllers.LoginController.loginPage
 POST        /signin                 controllers.LoginController.submitLogin
 GET         /signout                controllers.LoginController.signOut
 
-GET     /                           controllers.DashboardController.index
-GET     /org/me                     controllers.OrganizationController.me
-GET     /org/my-team                controllers.OrganizationController.myTeam
-GET     /org/project/:projectId     controllers.OrganizationController.projectInfo(projectId: Int)
-GET     /org/team/:teamId           controllers.OrganizationController.teamInfo(teamId: Int)
-GET     /org/team/:teamId/members   controllers.OrganizationController.teamMembers(teamId: Int)
+GET  /                               controllers.DashboardController.index
 
+GET  /org/me                         controllers.OrganizationController.me
+GET  /org/my-project                 controllers.OrganizationController.myTeam
+GET  /org/my-team                    controllers.OrganizationController.myProject
+GET  /org/project/:projectId         controllers.OrganizationController.projectInfo(projectId: Int)
+GET  /org/team/:teamId               controllers.OrganizationController.teamInfo(teamId: Int)
+GET  /org/team/:teamId/members       controllers.OrganizationController.teamMembers(teamId: Int)
+GET  /org/departments                controllers.OrganizationController.listDepartments
+GET  /org/department/:depId          controllers.OrganizationController.departmentInfo(depId: Int)
+GET  /org/department/:depId/projects controllers.OrganizationController.departmentProjects(depId: Int)
 
 
 # Map static resources from the /public folder to the /assets URL path
