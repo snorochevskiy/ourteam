@@ -35,4 +35,12 @@ class DepartmentDaoImpl @Inject()
     } yield ()).transactionally
     db.run(actions).map(_ => department)
   }
+
+  override def byUserId(userId: String): Future[Option[Department]] =
+    db run (for (
+      employee <- employees if employee.userId === userId;
+      team <- teams if team.id === employee.teamId;
+      project <- projects if project.id === team.projectId;
+      department <- departments if department.id === project.departmentId
+    ) yield department).result.headOption
 }

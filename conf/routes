@@ -14,6 +14,7 @@ GET  /                               controllers.DashboardController.index
 GET  /org/me                         controllers.OrganizationController.me
 GET  /org/my-project                 controllers.OrganizationController.myTeam
 GET  /org/my-team                    controllers.OrganizationController.myProject
+GET  /org/my-department              controllers.OrganizationController.myDepartment
 GET  /org/project/:projectId         controllers.OrganizationController.projectInfo(projectId: Int)
 GET  /org/team/:teamId               controllers.OrganizationController.teamInfo(teamId: Int)
 GET  /org/team/:teamId/members       controllers.OrganizationController.teamMembers(teamId: Int)

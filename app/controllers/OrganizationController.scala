@@ -33,8 +33,8 @@ class OrganizationController @Inject()
 
   def me() = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
     val user: UserIdentity = request.identity
-    employeeService.retrieve(user.id).flatMap{
-      case maybeEmployee: Option[Employee] => Future.successful(Ok(views.html.employee(user, maybeEmployee)))
+    employeeService.retrieve(user.id).map {
+      case maybeEmployee: Option[Employee] => Ok(views.html.employee(user, maybeEmployee))
     }.recover {
       case e: Exception =>
         Ok(views.html.error()).flashing("error" -> e.getMessage)
@@ -44,24 +44,32 @@ class OrganizationController @Inject()
   def myProject() = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
     val user: UserIdentity = request.identity
 
-    projectDao.byUserId(user.id).flatMap{
-      case Some((project)) => Future.successful(Redirect(controllers.routes.OrganizationController.projectInfo(project.id)))
-      case None => Future.successful(Ok(views.html.error()).flashing("error" -> Messages("project.notFound")))
+    projectDao.byUserId(user.id).map {
+      case Some((project)) => Redirect(controllers.routes.OrganizationController.projectInfo(project.id))
+      case None => Ok(views.html.error()).flashing("error" -> Messages("project.notFound"))
     }
   }
 
   def myTeam() = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
     val user: UserIdentity = request.identity
 
-    teamDao.byEmployee(user.id).flatMap{
-      case Some((team)) => Future.successful(Redirect(controllers.routes.OrganizationController.teamInfo(team.id)))
-      case None => Future.successful(Ok(views.html.error()).flashing("error" -> Messages("team.notFound")))
+    teamDao.byEmployee(user.id).map {
+      case Some((team)) => Redirect(controllers.routes.OrganizationController.teamInfo(team.id))
+      case None => Ok(views.html.error()).flashing("error" -> Messages("team.notFound"))
     }.recover {
       case e: Exception =>
         Ok(views.html.error()).flashing("error" -> Messages("team.notFound"))
     }
   }
 
+  def myDepartment() = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
+    val user: UserIdentity = request.identity
+
+    departmentDao.byUserId(user.id).map {
+      case Some((project)) => Redirect(controllers.routes.OrganizationController.departmentInfo(project.id))
+      case None => Ok(views.html.error()).flashing("error" -> Messages("department.notFound"))
+    }
+  }
 
   def listDepartments() = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
     for (departments <- departmentDao.all()) yield Ok(views.html.departments(departments))
@@ -80,9 +88,9 @@ class OrganizationController @Inject()
   }
 
   def teamInfo(teamId: Int) = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
-    teamDao.retrieveWithProject(teamId).flatMap{
-      case Some((team, project)) => Future.successful(Ok(views.html.team(team, project)))
-      case None => Future.successful(Ok(views.html.error()).flashing("error" -> Messages("team.notFound")))
+    teamDao.retrieveWithProject(teamId).map {
+      case Some((team, project)) => Ok(views.html.team(team, project))
+      case None => Ok(views.html.error()).flashing("error" -> Messages("team.notFound"))
     }.recover {
       case e: Exception =>
         Ok(views.html.error()).flashing("error" -> Messages("team.notFound"))
@@ -90,9 +98,9 @@ class OrganizationController @Inject()
   }
 
   def projectInfo(projectId: Int) = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
-    projectService.fullInfo(projectId).flatMap {
-      case Some((project, department, teams)) => Future.successful(Ok(views.html.project(project, department, teams)))
-      case None => Future.successful(Ok(views.html.error()).flashing("error" -> Messages("project.notFound")))
+    projectService.fullInfo(projectId).map {
+      case Some((project, department, teams)) => Ok(views.html.project(project, department, teams))
+      case None => Ok(views.html.error()).flashing("error" -> Messages("project.notFound"))
     }.recover {
       case e: Exception =>
         Ok(views.html.error()).flashing("error" -> Messages("team.notFound"))
