@@ -13,7 +13,7 @@ trait OrganizationTables {
     def code = column[String]("CODE")
     def name = column[String]("NAME")
     def description = column[String]("DESCRIPTION")
-    def * = (id, code, name, description) <> (Department.tupled, Department.unapply)
+    def * = (id.?, code, name, description) <> (Department.tupled, Department.unapply)
   }
   val departments = TableQuery[DepartmentTable]
 

@@ -9,6 +9,8 @@ trait DepartmentDao {
 
   def retrieve(id: Int): Future[Option[Department]]
 
+  def create(department: Department): Future[Department]
+
   def save(department: Department): Future[Department]
 
   def byUserId(userId: String): Future[Option[Department]]

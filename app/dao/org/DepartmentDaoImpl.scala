@@ -1,7 +1,8 @@
 package dao.org
 
 import javax.inject.Inject
-import model.{Department}
+import model.Department
+import play.api.Logger
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -29,10 +30,17 @@ class DepartmentDaoImpl @Inject()
     db.run(query.result.headOption)
   }
 
+  override def create(department: Department): Future[Department] = {
+    val actions = (for {
+      saved <- (departments returning departments.map(_.id) into ((dep,id) => dep.copy(id=Some(id)))) += department
+    } yield saved).transactionally
+    db.run(actions)
+  }
+
   override def save(department: Department): Future[Department] = {
     val actions = (for {
-      _ <- departments.insertOrUpdate(department)
-    } yield ()).transactionally
+      saved <- departments.insertOrUpdate(department)
+    } yield saved).transactionally
     db.run(actions).map(_ => department)
   }
 

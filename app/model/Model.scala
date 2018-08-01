@@ -19,7 +19,7 @@ case class DBLoginInfo (id: Option[Long], providerID: String, providerKey: Strin
 case class DBUserLoginInfo (userID: String, loginInfoId: Long)
 
 
-case class Department(id: Int, code:String, name: String, description: String)
+case class Department(id: Option[Int], code:String, name: String, description: String)
 
 case class Project(id: Int, departmentId: Int, code:String, name: String, description: String)
 
