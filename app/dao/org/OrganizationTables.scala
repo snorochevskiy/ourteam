@@ -25,7 +25,7 @@ trait OrganizationTables {
     def name = column[String]("NAME")
     def description = column[String]("DESCRIPTION")
 
-    def * = (id, departmentId, code, name, description) <> (Project.tupled, Project.unapply)
+    def * = (id.?, departmentId, code, name, description) <> (Project.tupled, Project.unapply)
     def departmentFk = foreignKey("DEPARTMENT_FK", departmentId, departments)(_.id)
   }
   val projects = TableQuery[ProjectTable]
@@ -38,7 +38,7 @@ trait OrganizationTables {
     def name = column[String]("NAME")
     def description = column[String]("DESCRIPTION")
 
-    override def * = (id, projectId, code, name, description) <> (Team.tupled, Team.unapply)
+    override def * = (id.?, projectId, code, name, description) <> (Team.tupled, Team.unapply)
     def projectFk = foreignKey("PROJECT_FK", projectId, projects)(_.id)
   }
   val teams = TableQuery[TeamTable]

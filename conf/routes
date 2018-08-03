@@ -24,6 +24,8 @@ GET  /org/department/:depId/projects controllers.OrganizationController.departme
 
 GET  /org/create-department          controllers.OrganizationController.createDepartment()
 POST /org/submit-department          controllers.OrganizationController.submitDepartment()
+GET  /org/create-project             controllers.OrganizationController.createProject(departmentId: Int)
+POST  /org/submit-project             controllers.OrganizationController.submitProject()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

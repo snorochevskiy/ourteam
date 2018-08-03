@@ -5,11 +5,11 @@ import com.mohiva.play.silhouette.api.Silhouette
 import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import dao.org.{DepartmentDao, EmployeeDao, ProjectDao, TeamDao}
-import javax.inject._
-import model.{Department, Employee, Team, UserIdentity}
+import javax.inject.{Singleton, Inject}
+import model.{Department, Project, Employee, Team, UserIdentity}
 import play.api.Logger
 import play.api.data.Form
-import play.api.data.Forms.{boolean, mapping, number, text, optional}
+import play.api.data.Forms.{boolean, mapping, number, optional, text}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import service.organization.{EmployeeService, ProjectService}
@@ -42,6 +42,16 @@ class OrganizationController @Inject()
     )(Department.apply)(Department.unapply)
   )
 
+  val projectForm = Form(
+    mapping(
+      "id" -> optional(number),
+      "departmentId" -> number,
+      "code" -> text,
+      "name" -> text,
+      "description" -> text
+    )(Project.apply)(Project.unapply)
+  )
+
   def me() = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
     val user: UserIdentity = request.identity
     employeeService.retrieve(user.id).map {
@@ -56,16 +66,34 @@ class OrganizationController @Inject()
     val user: UserIdentity = request.identity
 
     projectDao.byUserId(user.id).map {
-      case Some((project)) => Redirect(controllers.routes.OrganizationController.projectInfo(project.id))
+      case Some((project)) => Redirect(controllers.routes.OrganizationController.projectInfo(project.id.get))
       case None => Ok(views.html.error()).flashing("error" -> Messages("project.notFound"))
     }
+  }
+
+  def createProject(departmentId: Int) = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
+    Future.successful(Ok(views.html.editProject(new Project(None, departmentId, "", "", ""))))
+  }
+
+  def submitProject() = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
+    projectForm.bindFromRequest.fold(
+      formError => {
+        Logger.warn(formError.errors.map(_.message).reduceLeft(_ concat _))
+        Future.successful(BadRequest(views.html.error())
+          .flashing("error" -> formError.errors.map(_.message).reduceLeft(_ concat _)))
+      },
+      project => {
+        Logger.info(s"Department to save: $project")
+        projectDao.create(project).map(proj => Redirect(routes.OrganizationController.projectInfo(proj.id.get)))
+      }
+    )
   }
 
   def myTeam() = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
     val user: UserIdentity = request.identity
 
     teamDao.byEmployee(user.id).map {
-      case Some((team)) => Redirect(controllers.routes.OrganizationController.teamInfo(team.id))
+      case Some((team)) => Redirect(controllers.routes.OrganizationController.teamInfo(team.id.get))
       case None => Ok(views.html.error()).flashing("error" -> Messages("team.notFound"))
     }.recover {
       case e: Exception =>
@@ -95,18 +123,19 @@ class OrganizationController @Inject()
   }
 
   def departmentProjects(departmentId: Int) = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
-    for (projects <- projectDao.byDepartmentId(departmentId)) yield Ok(views.html.projects(projects))
+    for (projects <- projectDao.byDepartmentId(departmentId)) yield Ok(views.html.projects(departmentId, projects))
   }
 
   def createDepartment() = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
-    Future.successful(Ok(views.html.editDepartment()))
+    Future.successful(Ok(views.html.editDepartment(new Department(None, "", "", ""))))
   }
 
   def submitDepartment() = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
     departmentForm.bindFromRequest.fold(
       formError => {
         Logger.warn(formError.errors.map(_.message).reduceLeft(_ concat _))
-        Future.successful(BadRequest(views.html.editDepartment()).flashing("error" -> formError.errors.map(_.message).reduceLeft(_ concat _)))
+        Future.successful(BadRequest(views.html.editDepartment(new Department(None, "", "", "")))
+          .flashing("error" -> formError.errors.map(_.message).reduceLeft(_ concat _)))
       },
       department => {
         Logger.info(s"Department to save: $department")

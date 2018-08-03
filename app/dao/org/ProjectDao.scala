@@ -15,5 +15,7 @@ trait ProjectDao {
 
   def byUserId(userId: String): Future[Option[Project]]
 
+  def create(project: Project): Future[Project]
+
   def save(project: Project): Future[Project]
 }

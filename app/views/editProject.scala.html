@@ -1,11 +1,12 @@
 @import model.Department
 
-@(department: Department)(implicit request: RequestHeader, messages: Messages )
+@import model.Project
+@(project: Project)(implicit request: RequestHeader, messages: Messages )
 
-@main("Create / Modify department") {
+@main("Create / Modify project") {
 
     <div class="container" >
-        <form method="POST" action="@controllers.routes.OrganizationController.submitDepartment()">
+        <form method="POST" action="@controllers.routes.OrganizationController.submitProject()">
             @helper.CSRF.formField @* implicit RequestHeader required *@
 
             @request.flash.get("error").map { msg =>
@@ -14,33 +15,40 @@
                     <strong>@Messages("error")</strong> @msg
                 </div>
             }
-            @if(department.id.isDefined) {
+
+            <div class="form-group">
+                <label for="inputDepartmentId">Department ID</label>
+                <input type="text" pattern="\d{1,10}" class="form-control" readonly="true"
+                id="inputDepartmentId" name="departmentId" value="@project.departmentId" >
+            </div>
+
+            @if(project.id.isDefined) {
                 <div class="form-group">
                     <label for="inputId">ID</label>
                     <input type="text" pattern="\d{1,10}" class="form-control" readonly="true"
-                    id="inputId" name="id" value="@department.id" >
+                    id="inputId" name="id" value="@project.id" >
                 </div>
             }
 
             <div class="form-group">
                 <label for="inputCode">Code</label>
                 <input type="text" pattern="\w{1,16}" class="form-control"
-                    id="inputCode" name="code" value="@department.code"
-                    placeholder="departcode" size="16">
+                id="inputCode" name="code" value="@project.code"
+                placeholder="departcode" size="16">
             </div>
 
             <div class="form-group">
                 <label for="inputName">Name</label>
                 <input type="text" class="form-control"
-                    id="inputName" name="name" value="@department.name"
-                    placeholder="Department name" size="256">
+                id="inputName" name="name" value="@project.name"
+                placeholder="Department name" size="256">
             </div>
 
             <div class="form-group">
                 <label for="inputDescription">Description</label>
                 <input type="text" class="form-control"
-                    id="inputDescription" name="description" value="@department.description"
-                    placeholder="Department name" size="4096">
+                id="inputDescription" name="description" value="@project.description"
+                placeholder="Department name" size="4096">
             </div>
 
             <button type="submit" class="btn btn-primary">Save</button>

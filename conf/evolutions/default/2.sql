@@ -9,27 +9,25 @@ create table DEPARTMENT (
     DESCRIPTION VARCHAR(4096)
 );
 
-create sequence if not exists PROJECT_SEQ;
+create sequence if not exists PROJECT_SEQ START WITH 1000;
 
 create table PROJECT (
-    ID INTEGER NOT NULL PRIMARY KEY,
+    ID INTEGER default PROJECT_SEQ.nextval PRIMARY KEY,
     CODE VARCHAR(16) NOT NULL,
     NAME VARCHAR(256) NOT NULL,
     DESCRIPTION VARCHAR(4096),
     DEPARTMENT_ID INTEGER
 );
 
-create sequence if not exists TEAM_SEQ;
+create sequence if not exists TEAM_SEQ START WITH 1000;
 
 create table TEAM (
-    ID INTEGER NOT NULL PRIMARY KEY,
+    ID INTEGER default TEAM_SEQ.nextval PRIMARY KEY,
     CODE VARCHAR(16) NOT NULL,
     NAME VARCHAR(256) NOT NULL,
     DESCRIPTION VARCHAR(4096),
     PROJECT_ID INTEGER
 );
-
-create sequence if not exists EMPLOYEE_SEQ;
 
 create table EMPLOYEE (
     USER_ID VARCHAR(16),

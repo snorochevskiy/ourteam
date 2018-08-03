@@ -3,6 +3,9 @@
 @(departments: Seq[Department])(implicit request: RequestHeader, messages: Messages )
 
 @main("Departments") {
+
+    <a href="@controllers.routes.OrganizationController.createDepartment()">Create new department</a>
+
     <table class="table">
         <thead>
             <tr>
@@ -16,8 +19,8 @@
         <tbody>
         @for(department <- departments) {
             <tr>
-                <td>@department.id</td>
-                <td>@department.code</td>
+                <td><a href="@controllers.routes.OrganizationController.departmentInfo(department.id.get)">@department.id</a></td>
+                <td><a href="@controllers.routes.OrganizationController.departmentInfo(department.id.get)">@department.code</a></td>
                 <td>@department.name</td>
                 <td>@department.description</td>
             </tr>

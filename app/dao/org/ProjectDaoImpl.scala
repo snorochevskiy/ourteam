@@ -29,6 +29,13 @@ class ProjectDaoImpl @Inject()
     db.run(query.result.headOption)
   }
 
+  override def create(project: Project): Future[Project] = {
+    val actions = (for {
+      saved <- (projects returning projects.map(_.id) into ((proj,id) => proj.copy(id=Some(id)))) += project
+    } yield saved).transactionally
+    db.run(actions)
+  }
+
   override def save(project: Project): Future[Project] = {
     val actions = (for {
       _ <- projects.insertOrUpdate(project)

@@ -1,10 +1,12 @@
 @import model.Project
 
-@(projects: Seq[Project])(implicit request: RequestHeader, messages: Messages )
+@(departmentId: Int, projects: Seq[Project])(implicit request: RequestHeader, messages: Messages )
 
 @main("Projects") {
 
     <h1>Projects</h1>
+
+    <a href="@controllers.routes.OrganizationController.createProject(departmentId)">Create new project</a>
 
     <table class="table">
         <thead>
