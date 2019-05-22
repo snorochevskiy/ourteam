@@ -14,6 +14,9 @@ libraryDependencies += "net.codingwell" %% "scala-guice" % "4.1.0"
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
 libraryDependencies += "com.typesafe.play" %% "play-slick" % "3.0.3"
 libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "3.0.3"
+
+libraryDependencies += "javax.xml.bind" % "jaxb-api" % "2.3.1"
+
 libraryDependencies += "com.h2database" % "h2" % "1.4.196"
 //libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.11"
 
