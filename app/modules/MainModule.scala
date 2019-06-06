@@ -20,10 +20,11 @@ import dao._
 import dao.org._
 import net.codingwell.scalaguice.ScalaModule
 import play.api.Configuration
-import play.api.mvc.CookieHeaderEncoding
+import play.api.mvc.{Cookie, CookieHeaderEncoding}
 import service.{UserService, UserServiceImpl}
 import net.ceedubs.ficus.Ficus._
 import net.ceedubs.ficus.readers.ArbitraryTypeReader._
+import net.ceedubs.ficus.readers.ValueReader
 import service.organization.{EmployeeService, EmployeeServiceImpl, ProjectService, ProjectServiceImpl}
 import util.AuthErrorHandler
 
@@ -31,6 +32,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 // Required for Guice Dependencies Injection
 class MainModule extends AbstractModule with ScalaModule {
+
+  implicit val sameSiteReader: ValueReader[Option[Cookie.SameSite]] =
+    ValueReader.relative(cfg => Cookie.SameSite.parse(cfg.as[String]))
 
   override def configure(): Unit = {
     bind[Silhouette[DefaultEnv]].to[SilhouetteProvider[DefaultEnv]]
